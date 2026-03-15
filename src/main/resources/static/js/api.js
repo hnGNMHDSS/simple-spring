@@ -13,18 +13,21 @@ const service = axios.create({
 // 响应拦截器
 service.interceptors.response.use(
     response => {
-        const res = response.data;
-        if (res.code !== undefined && res.code !== "Success") {
-            Element.Message.error(res.msg || "操作失败");
-            return Promise.reject(res);
+        // 交给页面自己处理业务逻辑
+        if (response.status === 200) {
+            return response.data;
         }
-        return res;
+        // 非200状态码，统一拦截报错
+        Element.Message.error('请求失败，服务器异常');
+        return Promise.reject(response);
     },
     error => {
-        Element.Message.error(error.message || "服务器错误");
+        // ❌ 这里只处理 网络错误、超时、404、500 等HTTP错误
+        Element.Message.error('网络异常，请检查连接');
         return Promise.reject(error);
     }
 );
+
 
 // 核心接口（仅用户名+邮箱）
 const api = {
@@ -33,13 +36,13 @@ const api = {
         // 分页查询
         list: (params) => service.get("/api/user/page", {params}),
         // 单条查询
-        get: (id) => service.get(`/api/user/${id}`),
+        get: (id) => service.get(`/api/user?id=${id}`),
         // 新增
-        add: (data) => service.post("/user/add", data),
+        add: (data) => service.post("api/user", data),
         // 修改
         update: (data) => service.put("/api/user", data),
         // 删除
-        del: (id) => service.delete(`/api/user/${id}`),
+        del: (id) => service.delete(`/api/user?id=${id}`),
         // 批量删除
         batchDel: (ids) => service.delete("/api/user/batch", {data: ids})
     },

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.common.ReturnException;
 import com.example.demo.modules.integration.RegisterMessageGateway;
 import com.example.demo.modules.user.dto.UserDTO;
 import com.example.demo.modules.user.entity.User;
@@ -30,7 +31,7 @@ import java.util.List;
  * @date 2020-07-23 将业务层UserService中的调用JPA的方法修改成新的UserMapper方法
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
     //private UserRepository userRepository;
     private UserMapper userMapper;
@@ -49,12 +50,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         if (user.getId() != null && user.getId() != 0) {
             userMapper.updateUser(user);
         } else {
+            LambdaQueryWrapper<User> userWrapper = new LambdaQueryWrapper<>();
+            userWrapper.eq(User::getName, user.getName());
+            if (userMapper.selectCount(userWrapper) != 0) {
+                throw new ReturnException("用户名已存在");
+            }
             userMapper.addUser(user);
         }
         // 调用注册通知流程
         //registerMessageGateway.registerMessageFlow(user);
         UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user,userDTO);
+        BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
 
@@ -67,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     public UserDTO findUser(Long id) {
         User user = userMapper.selectById(id);
         UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user,userDTO);
+        BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
 
@@ -80,8 +86,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     public Page<User> selectPage(UserDTO dto) {
         Page<User> page = new Page<>(dto.getPageNum(), dto.getPageSize());
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(StringUtils.isNotEmpty(dto.getName()),User::getName,dto.getName());
-        userMapper.selectPage(page,wrapper);
+        wrapper.like(StringUtils.isNotEmpty(dto.getName()), User::getName, dto.getName());
+        userMapper.selectPage(page, wrapper);
         return page;
     }
 
