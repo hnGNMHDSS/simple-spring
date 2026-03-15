@@ -1,7 +1,7 @@
 package com.example.demo.modules.rabbitmq;
 
 import com.example.demo.modules.email.MailManager;
-import com.example.demo.modules.user.User;
+import com.example.demo.modules.user.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;

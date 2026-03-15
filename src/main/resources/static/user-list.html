@@ -81,6 +81,8 @@
                 },
                 // 用户列表
                 userList: [],
+                //分页结果
+                records:[],
                 // 总条数
                 total: 0,
                 // 选中的ID
@@ -96,8 +98,10 @@
                 try {
                     const params = { ...this.searchParams, ...this.pageParams };
                     const res = await api.user.list(params);
-                    this.userList = res.data.list || [];
+                    console.log("接口返回：", res);
+                    this.userList = res.data.records || [];
                     this.total = res.data.total || 0;
+                    console.log("处理后数据：", this.userList, this.total);
                 } catch (err) {
                     this.$message.error("获取列表失败");
                 }

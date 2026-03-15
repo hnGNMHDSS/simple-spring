@@ -32,7 +32,7 @@ public class Result<T> {
         return r;
     }
 
-    public static <T> Result<T> fail(CodeEnum status,String msg) {
+    public static <T> Result<T> fail(CodeEnum status, String msg) {
         Result<T> r = new Result<>();
         r.setCode(CodeEnum.ServerError);
         r.setMsg(msg);

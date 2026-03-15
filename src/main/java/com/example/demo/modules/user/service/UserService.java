@@ -1,6 +1,10 @@
-package com.example.demo.modules.user;
+package com.example.demo.modules.user.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.modules.integration.RegisterMessageGateway;
+import com.example.demo.modules.user.dto.UserDTO;
+import com.example.demo.modules.user.entity.User;
 import com.example.demo.modules.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,47 +24,21 @@ import java.util.List;
  * @date 2020-07-15 通过调用注册通知流程，屏蔽调用消息队列
  * @date 2020-07-23 将业务层UserService中的调用JPA的方法修改成新的UserMapper方法
  */
-@Service
-public class UserService {
-    @Autowired
-    //private UserRepository userRepository;
-    private UserMapper userMapper;
-
-    @Autowired
-    private RegisterMessageGateway registerMessageGateway;
-
+public interface UserService {
     // 返回所有的用户
-    public List<User> listUsers() {
-        return userMapper.findAll();
-    }
+    List<User> listUsers();
 
     // 保存用户
-    public User saveUser(User user) {
-        // 保存数据
-        if (user.getId() != null && user.getId() != 0) {
-            userMapper.updateUser(user);
-        } else {
-            userMapper.addUser(user);
-        }
-        // 调用注册通知流程
-        //registerMessageGateway.registerMessageFlow(user);
-
-        return user;
-    }
+    UserDTO saveUser(User user);
 
     // 删除用户
-    public void deleteUser(Long id) {
-        userMapper.deleteById(id);
-    }
+    int deleteById(Long id);
 
     // 查找用户
-    public User findUser(Long id) {
-        return userMapper.findById(id);
-    }
+    UserDTO findUser(Long id);
 
     // 根据名称查找用户
-    public List<User> searchUser(String name) {
-        return userMapper.findByName(name);
-    }
+    List<User> searchUser(String name);
 
+    Page<User> selectPage(UserDTO dto);
 }

@@ -16,6 +16,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result<?> handleReturnException(Exception e){
-        return Result.fail(CodeEnum.ServerError,"服务器异常"+e.getMessage());
+        return Result.fail(CodeEnum.ServerError,"服务器异常:"+e.getMessage());
     }
 }

@@ -1,5 +1,7 @@
-package com.example.demo.modules.user;
+package com.example.demo.modules.user.controller;
 import com.example.demo.modules.admin.controller.AdminController;
+import com.example.demo.modules.user.service.UserService;
+import com.example.demo.modules.user.entity.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -80,7 +82,7 @@ public class UserController {
     // 删除用户
     @RequestMapping(path = "/del")
     public ModelAndView del(@RequestParam(name = "id") Long id) {
-        userService.deleteUser(id);
+        userService.deleteById(id);
         return new ModelAndView("redirect:/index.html");
 
     }

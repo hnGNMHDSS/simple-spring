@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.response.use(
     response => {
         const res = response.data;
-        if (res.code !== 200 && res.code !== undefined) {
+        if (res.code !== undefined && res.code !== "Success") {
             Element.Message.error(res.msg || "操作失败");
             return Promise.reject(res);
         }
@@ -31,7 +31,7 @@ const api = {
     // 用户管理接口
     user: {
         // 分页查询
-        list: (params) => service.get("/user/list", { params }),
+        list: (params) => service.get("/api/user/page", {params}),
         // 单条查询
         get: (id) => service.get(`/api/user/${id}`),
         // 新增
@@ -41,7 +41,7 @@ const api = {
         // 删除
         del: (id) => service.delete(`/api/user/${id}`),
         // 批量删除
-        batchDel: (ids) => service.delete("/api/user/batch", { data: ids })
+        batchDel: (ids) => service.delete("/api/user/batch", {data: ids})
     },
     // 通用测试接口
     test: {

@@ -1,6 +1,6 @@
 package com.example.demo.modules.integration;
 
-import com.example.demo.modules.user.User;
+import com.example.demo.modules.user.entity.User;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.stereotype.Component;
 

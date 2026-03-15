@@ -54,7 +54,7 @@ public class AdminController {
         admin.setUserPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
         Admin save = adminService.save(admin);
         AdminDTO adminDTO = new AdminDTO();
-        BeanUtils.copyProperties(admin, adminDTO);
+        BeanUtils.copyProperties(save, adminDTO);
         return Result.success(adminDTO);
 
     }

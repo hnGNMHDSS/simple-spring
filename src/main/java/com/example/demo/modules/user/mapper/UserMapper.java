@@ -1,6 +1,9 @@
 package com.example.demo.modules.user.mapper;
 
-import com.example.demo.modules.user.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.demo.modules.user.dto.UserDTO;
+import com.example.demo.modules.user.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,13 +15,14 @@ import java.util.List;
  * @date 2020-07-23
  */
 @Repository
-public interface UserMapper {
+@Mapper
+public interface UserMapper extends BaseMapper<User> {
 
     // 查找所有用户
     List<User> findAll();
 
     // 根据id查找用户
-    User findById(Long id);
+    UserDTO findById(Long id);
 
     // 新增用户
     Long addUser(User user);
@@ -27,7 +31,7 @@ public interface UserMapper {
     void updateUser(User user);
 
     // 删除用户
-    void deleteById(Long id);
+    //void deleteById(Long id);
 
     // 自定义添加通过用户名称查找用户信息
     List<User> findByName(String name);

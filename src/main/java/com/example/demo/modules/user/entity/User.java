@@ -1,4 +1,4 @@
-package com.example.demo.modules.user;
+package com.example.demo.modules.user.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -49,6 +49,9 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
     public Long getId() {
         return id;
     }
